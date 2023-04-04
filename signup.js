@@ -4,30 +4,23 @@ const form = document.getElementById('userForm');
 form.addEventListener('submit', (event) => {
 	event.preventDefault();
 	const formElements = Array.from(form.elements);
-
-    const body = {};
-
-
+	const body = {};
 	formElements.forEach((el) => {
-        body[el.name] = el.value;
-        console.log(body);
-    });
-
-    formElements.reduce((acc, curr) => {
-
-    }, {})
-
-	console.log(formElements);
-    /*
-{
-  "id": 0,
-  "username": "string",
-  "firstName": "string",
-  "lastName": "string",
-  "email": "string",
-  "password": "string",
-  "phone": "string",
-  "userStatus": 0
-}
-    */
+		if (el.name) {
+			body[el.name] = el.value;
+		}
+	});
+	body.id = 0;
+	fetch('https://petstore.swagger.io/v2/user', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(body),
+	})
+		.then((res) => {
+			console.log(res.json());
+		})
+		.catch((err) => console.error(err));
+	console.log(JSON.stringify(body));
 });
